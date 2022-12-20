@@ -41,13 +41,23 @@ export default function ItemInput({ items, setItems }) {
     }
 
     const handleAddButtonClick = () => {
+        addItem();
+    }
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            addItem();
+        }
+    }
+
+    const addItem = () => {
         if (!validateInput(itemInputValue))
             return
 
         const newItem = { name: itemInputValue, amount: itemInputAmount, isChecked: false }
         const loadingItem = { name: "Adding item...", amount: itemInputAmount, isChecked: false }
         var prevItems
-        
+
         setItems(currentItems => {
             prevItems = currentItems
             return [...currentItems, loadingItem]
@@ -93,7 +103,8 @@ export default function ItemInput({ items, setItems }) {
                 label="Item name"
                 variant="standard"
                 value={itemInputValue}
-                onChange={handleItemInputValueChange} />
+                onChange={handleItemInputValueChange}
+                onKeyPress={handleKeyPress} />
             <TextField
                 id="amountInput"
                 label="Amount"
