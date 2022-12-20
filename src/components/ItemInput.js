@@ -8,7 +8,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
 const ON_EMPTY_ITEM_NAME_ERROR_MESSAGE = "Name cannot be empty"
 
-export default function ItemInput({ items, setItems }) {
+export default function ItemInput({ setItems, deleteCheckedItemsCallback }) {
     const [itemInputValue, setItemInputValue] = useState("")
     const [itemInputAmount, setItemInputAmount] = useState(1)
     const [isItemNameInvalid, setIsItemNameInvalid] = useState(false)
@@ -55,13 +55,6 @@ export default function ItemInput({ items, setItems }) {
             return
 
         const newItem = { name: itemInputValue, amount: itemInputAmount, isChecked: false }
-        const loadingItem = { name: "Adding item...", amount: itemInputAmount, isChecked: false }
-        var prevItems
-
-        setItems(currentItems => {
-            prevItems = currentItems
-            return [...currentItems, loadingItem]
-        })
 
         fetch(API_IP, {
             method: "POST",
@@ -75,8 +68,8 @@ export default function ItemInput({ items, setItems }) {
             .then(res => res.json())
             .then((result) => {
                 newItem.id = result.id
-                setItems(() => {
-                    return [...prevItems, newItem]
+                setItems((items) => {
+                    return [...items, newItem]
                 })
             })
 
@@ -85,13 +78,7 @@ export default function ItemInput({ items, setItems }) {
     }
 
     const handleDeleteButtonClick = () => {
-        fetch(`${API_IP}deleteCheckedItems`, {
-            method: "DELETE",
-        })
-            .then(res => res.json())
-            .then((result) => {
-                setItems(result)
-            })
+        deleteCheckedItemsCallback();
     }
 
     return (

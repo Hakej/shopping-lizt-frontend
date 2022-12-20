@@ -19,19 +19,15 @@ const uncheckedVars = {
 
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
 
-export default function Item({ id, name, amount, isCheckedVal = false }) {
-    const [isChecked, setIsChecked] = useState(isCheckedVal === false ? false : true)
+export default function Item({ id, name, amount, isChecked, checkItemCallback }) {
+    const [isCheckedValue, setIsCheckedValue] = useState(isChecked)
     const [vars, setVars] = useState(isChecked ? checkedVars : uncheckedVars);
 
     function onButtonClick() {
-        const newIsChecked = !isChecked
-        setIsChecked(newIsChecked)
-        setVars(newIsChecked ? checkedVars : uncheckedVars)
-
-        fetch(API_IP + `checkItem/${id}/${newIsChecked}`, { method: "PUT" })
-            .then((result) => {
-                console.log(result)
-            })
+        const newIsCheckedValue = !isCheckedValue
+        setVars(newIsCheckedValue ? checkedVars : uncheckedVars)
+        setIsCheckedValue(newIsCheckedValue)
+        checkItemCallback(id, newIsCheckedValue)
     }
 
     return (
