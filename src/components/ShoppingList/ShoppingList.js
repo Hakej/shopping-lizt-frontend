@@ -4,8 +4,9 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Item from '../Item';
 import { useEffect, useState } from "react";
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, ListItemText } from '@mui/material';
 import './ShoppingList.css';
+import FlippingText from '../FlippingText/FlippingText';
 
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
 
@@ -39,9 +40,9 @@ export default function ShoppingList() {
                                 })}
                         </List>
                         <List hidden={items.length !== 0}>
-                            <div id="addItemMessage">
-                                Add item to show it here!
-                            </div>
+                            <ListItemText>
+                                <FlippingText text="Add item to show it here!"/>
+                            </ListItemText>
                         </List>
                     </nav>
                 </Box>
