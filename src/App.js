@@ -1,7 +1,7 @@
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import ShoppingList from './components/ShoppingList';
+import ShoppingList from './components/ShoppingList/ShoppingList';
 
 const darkTheme = createTheme({
   palette: {
