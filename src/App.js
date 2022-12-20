@@ -14,9 +14,9 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <div className="App">
-        <header className="App-header">
+        <div className="shopping-list">
           <ShoppingList />
-        </header>
+        </div>
       </div>
     </ThemeProvider>
   );

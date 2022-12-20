@@ -26,12 +26,17 @@ export default function ItemInput({ setItems }) {
         }
         return true
     }
+
     const handleItemInputValueChange = e => {
         validateInput(e.target.value)
         setItemInputValue(e.target.value)
     }
 
     const handleItemInputAmountChange = e => {
+        const itemAmount = e.target.value;
+        if (itemAmount <= 0)
+            return
+
         setItemInputAmount(e.target.value);
     }
 
@@ -40,6 +45,13 @@ export default function ItemInput({ setItems }) {
             return
 
         const newItem = { name: itemInputValue, amount: itemInputAmount, isChecked: false }
+        const loadingItem = { name: "Adding item...", amount: itemInputAmount, isChecked: false }
+        var prevItems
+        
+        setItems(currentItems => {
+            prevItems = currentItems
+            return [...currentItems, loadingItem]
+        })
 
         fetch(API_IP, {
             method: "POST",
@@ -53,7 +65,7 @@ export default function ItemInput({ setItems }) {
             .then(res => res.json())
             .then((result) => {
                 newItem.id = result.id
-                setItems(prevItems => {
+                setItems(() => {
                     return [...prevItems, newItem]
                 })
             })
@@ -75,6 +87,7 @@ export default function ItemInput({ setItems }) {
     return (
         <div>
             <TextField
+                id="nameInput"
                 error={isItemNameInvalid}
                 helperText={invalidItemNameHelperText}
                 label="Item name"
@@ -82,6 +95,7 @@ export default function ItemInput({ setItems }) {
                 value={itemInputValue}
                 onChange={handleItemInputValueChange} />
             <TextField
+                id="amountInput"
                 label="Amount"
                 type="number"
                 variant="standard"
@@ -92,7 +106,8 @@ export default function ItemInput({ setItems }) {
                 onChange={handleItemInputAmountChange}
                 sx={{ width: '100%', maxWidth: 65 }}
             />
-            <IconButton color="primary" aria-label="upload picture" component="label" onClick={handleAddButtonClick}>
+
+            <IconButton color="primary" onClick={handleAddButtonClick}>
                 <AddIcon id="addButton" />
             </IconButton>
             <IconButton color="error" onClick={handleDeleteButtonClick}>
