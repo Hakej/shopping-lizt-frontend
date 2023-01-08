@@ -8,26 +8,24 @@ const CustomListItemButton = styled(ListItemButton)({
     paddingLeft: 'var(--paddingLeft)',
 });
 
-const checkedVars = {
+const itemInBasketVars = {
     '--color': 'gray',
     '--paddingLeft': '25px',
 }
-const uncheckedVars = {
+const itemVars = {
     '--color': 'white',
     '--paddingLeft': '10px',
 }
 
-const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
-
-export default function Item({ id, name, amount, isChecked, checkItemCallback }) {
-    const [isCheckedValue, setIsCheckedValue] = useState(isChecked)
-    const [vars, setVars] = useState(isChecked ? checkedVars : uncheckedVars);
+export default function Item({ id, name, amount, isInBasket, checkItemCallback }) {
+    const [isInBasketValue, setIsInBasketValue] = useState(isInBasket)
+    const [vars, setVars] = useState(isInBasket ? itemInBasketVars : itemVars);
 
     function onButtonClick() {
-        const newIsCheckedValue = !isCheckedValue
-        setVars(newIsCheckedValue ? checkedVars : uncheckedVars)
-        setIsCheckedValue(newIsCheckedValue)
-        checkItemCallback(id, newIsCheckedValue)
+        const newIsInBasketValue = !isInBasketValue
+        setVars(newIsInBasketValue ? itemInBasketVars : itemVars)
+        setIsInBasketValue(newIsInBasketValue)
+        checkItemCallback(id, newIsInBasketValue)
     }
 
     return (

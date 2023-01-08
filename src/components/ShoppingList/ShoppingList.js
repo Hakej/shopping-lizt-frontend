@@ -9,6 +9,7 @@ import './ShoppingList.css';
 import FlippingText from '../FlippingText/FlippingText';
 
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
+const SHOPPING_LIST_ID = process.env.REACT_APP_SHOPPING_LIST_ID
 
 export default function ShoppingList({ fireDeleteAnimationCallback }) {
     const [items, setItems] = useState([])
@@ -16,7 +17,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
 
     // GET: Items
     useEffect(() => {
-        fetch(API_IP)
+        fetch(`${API_IP}shoppingList/items/${SHOPPING_LIST_ID}`)
             .then(res => res.json())
             .then((result) => {
                 setItems(result)
@@ -24,14 +25,14 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
             })
     }, [])
 
-    // DELETE: Checked items
-    const deleteCheckedItems = () => {
-        // If no items are checked, don't delete anything
-        if (!items.filter(item => item.isChecked).length)
+    // DELETE: Delete items in basket
+    const deleteInBasketItems = () => {
+        // If no items are in basket, don't delete anything
+        if (!items.filter(item => item.isInBasket).length)
             return
 
-        fetch(`${API_IP}deleteCheckedItems`, {
-            method: "DELETE",
+        fetch(`${API_IP}shoppingList/deleteInBasketItems/${SHOPPING_LIST_ID}`, {
+            method: "DELETE"
         })
             .then(res => res.json())
             .then((result) => {
@@ -40,13 +41,18 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
             })
     }
 
-    // PUT: Check item
-    const checkItem = (itemId, newIsChecked) => {
-        fetch(API_IP + `checkItem/${itemId}/${newIsChecked}`, { method: "PUT" })
+    // PUT: Put item in basket 
+    const putItemInBasket = (itemId, newIsInBasket) => {
+        const itemToPutInBasket = items.find(item => item.id === itemId);
+        itemToPutInBasket.isInBasket = newIsInBasket;
+
+        fetch(`${API_IP}items`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(itemToPutInBasket)
+        })
             .then(() => {
-                const newItems = items
-                newItems.find(item => item.id === itemId).isChecked = newIsChecked
-                setItems(newItems)
+                setItems(items)
             })
     }
 
@@ -56,12 +62,12 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
                 <CircularProgress />
             </div>
             <div hidden={!isApiLoaded}>
-                <ItemInput items={items} setItems={setItems} deleteCheckedItemsCallback={deleteCheckedItems} />
+                <ItemInput items={items} setItems={setItems} deleteInBasketItemsCallback={deleteInBasketItems} />
                 <Box sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper' }}>
                     <List hidden={items.length === 0}>
                         {
                             items.map(item => {
-                                return <Item key={item.id} id={item.id} x name={item.name} amount={item.amount} isChecked={item.isChecked} checkItemCallback={checkItem} />
+                                return <Item key={item.id} id={item.id} x name={item.name} amount={item.amount} isInBasket={item.isInBasket} checkItemCallback={putItemInBasket} />
                             })}
                     </List>
                     <List hidden={items.length !== 0}>

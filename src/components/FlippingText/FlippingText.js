@@ -1,9 +1,9 @@
 import * as React from 'react';
 import './FlippingText.css';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function FlippingText({ text }) {
-    const [flipText, setFlipText] = useState(text.split(''))
+    const [flipText] = useState(text.split(''))
 
     var howManySpacesThereWas = 0
 

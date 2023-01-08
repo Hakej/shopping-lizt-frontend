@@ -8,7 +8,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
 const ON_EMPTY_ITEM_NAME_ERROR_MESSAGE = "Name cannot be empty"
 
-export default function ItemInput({ setItems, deleteCheckedItemsCallback }) {
+const SHOPPING_LIST_ID = process.env.REACT_APP_SHOPPING_LIST_ID
+
+export default function ItemInput({ setItems, deleteInBasketItemsCallback }) {
     const [itemInputValue, setItemInputValue] = useState("")
     const [itemInputAmount, setItemInputAmount] = useState(1)
     const [isItemNameInvalid, setIsItemNameInvalid] = useState(false)
@@ -54,15 +56,15 @@ export default function ItemInput({ setItems, deleteCheckedItemsCallback }) {
         if (!validateInput(itemInputValue))
             return
 
-        const newItem = { name: itemInputValue, amount: itemInputAmount, isChecked: false }
+        const newItem = { name: itemInputValue, amount: itemInputAmount, isInBasket: false }
 
-        fetch(API_IP, {
+        fetch(`${API_IP}shoppingList/addItem/${SHOPPING_LIST_ID}`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 "name": newItem.name,
                 "amount": newItem.amount,
-                "isChecked": newItem.isChecked
+                "isInBasket": newItem.isInBasket
             })
         })
             .then(res => res.json())
@@ -78,7 +80,7 @@ export default function ItemInput({ setItems, deleteCheckedItemsCallback }) {
     }
 
     const handleDeleteButtonClick = () => {
-        deleteCheckedItemsCallback();
+        deleteInBasketItemsCallback();
     }
 
     return (
