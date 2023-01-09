@@ -1,6 +1,8 @@
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useState } from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -32,14 +34,6 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback }) {
     const handleItemInputValueChange = e => {
         validateInput(e.target.value)
         setItemInputValue(e.target.value)
-    }
-
-    const handleItemInputAmountChange = e => {
-        const itemAmount = e.target.value;
-        if (itemAmount <= 0)
-            return
-
-        setItemInputAmount(e.target.value);
     }
 
     const handleAddButtonClick = () => {
@@ -83,6 +77,15 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback }) {
         deleteInBasketItemsCallback();
     }
 
+    const handleRaiseAmountButtonClick = () => {
+        setItemInputAmount(itemInputAmount + 1);
+    }
+    const handleLowerAmountButtonClick = () => {
+        if (itemInputAmount === 1)
+            return;
+        setItemInputAmount(itemInputAmount - 1);
+    }
+
     return (
         <div>
             <TextField
@@ -94,18 +97,14 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback }) {
                 value={itemInputValue}
                 onChange={handleItemInputValueChange}
                 onKeyPress={handleKeyPress} />
-            <TextField
-                id="amountInput"
-                label="Amount"
-                type="number"
-                variant="standard"
-                InputProps={{
-                    startAdornment: <InputAdornment position="start">x</InputAdornment>
-                }}
-                value={itemInputAmount}
-                onChange={handleItemInputAmountChange}
-                sx={{ width: '100%', maxWidth: 65 }}
-            />
+
+            <IconButton id="raiseAmountButton" onClick={handleRaiseAmountButtonClick}>
+                <ArrowUpwardIcon />
+            </IconButton>
+            {itemInputAmount}
+            <IconButton id="lowerAmountButton" onClick={handleLowerAmountButtonClick} disabled={itemInputAmount === 1}>
+                <ArrowDownwardIcon />
+            </IconButton>
 
             <IconButton color="primary" onClick={handleAddButtonClick}>
                 <AddIcon id="addButton" />
