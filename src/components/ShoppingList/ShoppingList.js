@@ -15,6 +15,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
     const [items, setItems] = useState([])
     const [isApiLoaded, setIsApiLoaded] = useState(false)
     const [shouldDeleteButtonBeEnabled, setShouldDeleteButtonBeEnabled] = useState(items.find(item => item.isInBasket) !== undefined)
+    const [itemsInBasketAmount, setItemsInBasketAmount] = useState(items.filter(item => item.isInBasket)?.length)
 
     // GET: Items
     useEffect(() => {
@@ -23,6 +24,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
             .then((result) => {
                 setItems(result)
                 setShouldDeleteButtonBeEnabled(result.find(item => item.isInBasket) !== undefined)
+                setItemsInBasketAmount(result.filter(item => item.isInBasket)?.length);
                 setIsApiLoaded(true)
             })
     }, [])
@@ -40,6 +42,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
             .then((result) => {
                 setItems(result)
                 setShouldDeleteButtonBeEnabled(result.find(item => item.isInBasket) !== undefined)
+                setItemsInBasketAmount(result.filter(item => item.isInBasket)?.length);
                 fireDeleteAnimationCallback()
             })
     }
@@ -49,6 +52,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
         const itemToPutInBasket = items.find(item => item.id === itemId);
         itemToPutInBasket.isInBasket = newIsInBasket;
         setShouldDeleteButtonBeEnabled(items.find(item => item.isInBasket) !== undefined)
+        setItemsInBasketAmount(items.filter(item => item.isInBasket)?.length);
 
         fetch(`${API_IP}items`, {
             method: "PUT",
@@ -66,7 +70,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
                 <CircularProgress />
             </div>
             <div hidden={!isApiLoaded}>
-                <ItemInput items={items} setItems={setItems} deleteInBasketItemsCallback={deleteInBasketItems} shouldDeleteButtonBeEnabled={shouldDeleteButtonBeEnabled} />
+                <ItemInput items={items} setItems={setItems} deleteInBasketItemsCallback={deleteInBasketItems} shouldDeleteButtonBeEnabled={shouldDeleteButtonBeEnabled} itemsInBasketAmount={itemsInBasketAmount} />
                 <Box sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper' }}>
                     <List hidden={items.length === 0}>
                         {

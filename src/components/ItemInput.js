@@ -5,13 +5,14 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useState } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Badge } from '@mui/material';
 
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
 const ON_EMPTY_ITEM_NAME_ERROR_MESSAGE = "Name cannot be empty"
 
 const SHOPPING_LIST_ID = process.env.REACT_APP_SHOPPING_LIST_ID
 
-export default function ItemInput({ setItems, deleteInBasketItemsCallback, shouldDeleteButtonBeEnabled }) {
+export default function ItemInput({ setItems, deleteInBasketItemsCallback, shouldDeleteButtonBeEnabled, itemsInBasketAmount }) {
     const [itemInputValue, setItemInputValue] = useState("")
     const [itemInputAmount, setItemInputAmount] = useState(1)
     const [isItemNameInvalid, setIsItemNameInvalid] = useState(false)
@@ -109,7 +110,9 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback, shoul
                 <AddIcon id="addButton" />
             </IconButton>
             <IconButton color="error" onClick={handleDeleteButtonClick} disabled={!shouldDeleteButtonBeEnabled}>
-                <DeleteForeverIcon />
+                <Badge badgeContent={itemsInBasketAmount} color="error">
+                    <DeleteForeverIcon />
+                </Badge>
             </IconButton>
         </div>
     );
