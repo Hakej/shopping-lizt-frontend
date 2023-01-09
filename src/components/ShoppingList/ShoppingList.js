@@ -14,6 +14,7 @@ const SHOPPING_LIST_ID = process.env.REACT_APP_SHOPPING_LIST_ID
 export default function ShoppingList({ fireDeleteAnimationCallback }) {
     const [items, setItems] = useState([])
     const [isApiLoaded, setIsApiLoaded] = useState(false)
+    const [shouldDeleteButtonBeEnabled, setShouldDeleteButtonBeEnabled] = useState(items.find(item => item.isInBasket) !== undefined)
 
     // GET: Items
     useEffect(() => {
@@ -45,6 +46,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
     const putItemInBasket = (itemId, newIsInBasket) => {
         const itemToPutInBasket = items.find(item => item.id === itemId);
         itemToPutInBasket.isInBasket = newIsInBasket;
+        setShouldDeleteButtonBeEnabled(items.find(item => item.isInBasket) !== undefined)
 
         fetch(`${API_IP}items`, {
             method: "PUT",
@@ -62,7 +64,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
                 <CircularProgress />
             </div>
             <div hidden={!isApiLoaded}>
-                <ItemInput items={items} setItems={setItems} deleteInBasketItemsCallback={deleteInBasketItems} />
+                <ItemInput items={items} setItems={setItems} deleteInBasketItemsCallback={deleteInBasketItems} shouldDeleteButtonBeEnabled={shouldDeleteButtonBeEnabled} />
                 <Box sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper' }}>
                     <List hidden={items.length === 0}>
                         {
