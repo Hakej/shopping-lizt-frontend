@@ -22,6 +22,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
             .then(res => res.json())
             .then((result) => {
                 setItems(result)
+                setShouldDeleteButtonBeEnabled(result.find(item => item.isInBasket) !== undefined)
                 setIsApiLoaded(true)
             })
     }, [])
@@ -31,13 +32,14 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
         // If no items are in basket, don't delete anything
         if (!items.filter(item => item.isInBasket).length)
             return
-
-        fetch(`${API_IP}shoppingList/deleteInBasketItems/${SHOPPING_LIST_ID}`, {
-            method: "DELETE"
-        })
+            
+            fetch(`${API_IP}shoppingList/deleteInBasketItems/${SHOPPING_LIST_ID}`, {
+                method: "DELETE"
+            })
             .then(res => res.json())
             .then((result) => {
                 setItems(result)
+                setShouldDeleteButtonBeEnabled(result.find(item => item.isInBasket) !== undefined)
                 fireDeleteAnimationCallback()
             })
     }
