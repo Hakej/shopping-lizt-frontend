@@ -3,9 +3,10 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Badge } from '@mui/material';
+import { useSocket } from './WebSocket/UseSocket';
 
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
 const ON_EMPTY_ITEM_NAME_ERROR_MESSAGE = "Name cannot be empty"
@@ -17,6 +18,20 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback, shoul
     const [itemInputAmount, setItemInputAmount] = useState(1)
     const [isItemNameInvalid, setIsItemNameInvalid] = useState(false)
     const [invalidItemNameHelperText, setInvalidItemNameHelperText] = useState("")
+
+    const socket = useSocket()
+
+    useEffect(() => {
+        socket.on('onItemAdded', (newItem) => {
+            setItems((items) => {
+                return [...items, newItem]
+            })
+        });
+
+        return () => {
+            socket.off('onItemAdded');
+        };
+    }, []);
 
     const validateInput = (inputToValidate) => {
         if (inputToValidate === "") {
@@ -67,6 +82,7 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback, shoul
                 setItems((items) => {
                     return [...items, newItem]
                 })
+                socket.emit('onItemAdded', newItem);
             })
 
         setItemInputValue("")

@@ -26,14 +26,14 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <div className="App">
-        <div className={shoppingListClass}>
-          <ShoppingList fireDeleteAnimationCallback={fireDeleteAnimation} />
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <div className="App">
+          <div className={shoppingListClass}>
+            <ShoppingList fireDeleteAnimationCallback={fireDeleteAnimation} />
+          </div>
         </div>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
   );
 }
 
