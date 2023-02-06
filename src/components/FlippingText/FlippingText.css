@@ -1,0 +1,19 @@
+.waviy {
+    text-align: center;
+    justify-content: center;
+}
+
+.waviy span {
+    display: inline-block;
+    font-size: 24px;
+    animation: flip 2s infinite;
+    animation-delay: calc(.2s * var(--i));
+}
+
+@keyframes flip {
+    0% {
+    }
+    80% {
+        transform: rotateX(30deg)
+    }
+}
