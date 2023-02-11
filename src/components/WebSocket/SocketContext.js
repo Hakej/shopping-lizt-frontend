@@ -10,3 +10,7 @@ const socket = io.connect(API_IP, {
 })
 
 export const SocketContext = createContext(socket);
+
+export const SocketProvider = (props) => {
+    return (<SocketContext.Provider value={socket}>{props.children}</SocketContext.Provider>);
+}

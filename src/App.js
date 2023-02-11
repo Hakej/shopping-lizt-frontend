@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import ShoppingList from './components/ShoppingList/ShoppingList';
 import { useState } from 'react';
+import { SocketProvider } from './components/WebSocket/SocketContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -26,6 +27,7 @@ function App() {
   }
 
   return (
+    <SocketProvider>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <div className="App">
@@ -34,6 +36,7 @@ function App() {
           </div>
         </div>
       </ThemeProvider>
+    </SocketProvider>
   );
 }
 
