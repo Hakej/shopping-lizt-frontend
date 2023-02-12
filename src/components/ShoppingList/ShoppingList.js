@@ -1,8 +1,8 @@
-import ItemInput from '../ItemInput';
+import ItemInput from './ItemInput';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import Item from '../Item';
+import Item from './Item';
 import { useEffect, useState } from "react";
 import { CircularProgress, ListItemText } from '@mui/material';
 import './ShoppingList.css';
