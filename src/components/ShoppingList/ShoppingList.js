@@ -1,4 +1,4 @@
-import ItemInput from '../ItemInput';
+import ItemInput from '../ItemInput/ItemInput';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -100,7 +100,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
             </div>
             <div hidden={!isApiLoaded}>
                 <ItemInput items={items} setItems={setItems} deleteInBasketItemsCallback={deleteInBasketItems} shouldDeleteButtonBeEnabled={shouldDeleteButtonBeEnabled} itemsInBasketAmount={itemsInBasketAmount} />
-                <Box sx={{ width: '100%', maxWidth: 600, bgcolor: 'background.paper' }}>
+                <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                     <List hidden={items.length === 0}>
                         {
                             items.map(item => {

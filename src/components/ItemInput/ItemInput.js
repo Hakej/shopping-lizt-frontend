@@ -6,7 +6,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useState, useEffect } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Badge } from '@mui/material';
-import { useSocket } from './WebSocket/UseSocket';
+import { useSocket } from '../WebSocket/UseSocket';
 
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
 const ON_EMPTY_ITEM_NAME_ERROR_MESSAGE = "Name cannot be empty"
@@ -112,20 +112,40 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback, shoul
                 variant="standard"
                 value={itemInputValue}
                 onChange={handleItemInputValueChange}
-                onKeyPress={handleKeyPress} />
+                onKeyPress={handleKeyPress}
+                sx={{
+                    width: "67%"
+                }}
+            />
 
-            <IconButton id="raiseAmountButton" onClick={handleRaiseAmountButtonClick}>
+            <IconButton
+                id="raiseAmountButton"
+                onClick={handleRaiseAmountButtonClick}
+                sx={{
+                    width: "10%"
+                }}
+            >
                 <ArrowUpwardIcon />
             </IconButton>
             {itemInputAmount}
-            <IconButton id="lowerAmountButton" onClick={handleLowerAmountButtonClick} disabled={itemInputAmount === 1}>
+            <IconButton
+                id="lowerAmountButton"
+                onClick={handleLowerAmountButtonClick}
+                disabled={itemInputAmount === 1}
+                sx={{
+                    width: "10%"
+                }}
+            >
                 <ArrowDownwardIcon />
             </IconButton>
 
-            <IconButton color="primary" onClick={handleAddButtonClick}>
-                <AddIcon id="addButton" />
-            </IconButton>
-            <IconButton color="error" onClick={handleDeleteButtonClick} disabled={!shouldDeleteButtonBeEnabled}>
+            <IconButton color="error"
+                onClick={handleDeleteButtonClick}
+                disabled={!shouldDeleteButtonBeEnabled}
+                sx={{
+                    width: "10%"
+                }}
+            >
                 <Badge badgeContent={itemsInBasketAmount} color="error">
                     <DeleteForeverIcon />
                 </Badge>
