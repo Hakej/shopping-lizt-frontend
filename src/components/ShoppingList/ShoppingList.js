@@ -15,7 +15,7 @@ const SHOPPING_LIST_ID = process.env.REACT_APP_SHOPPING_LIST_ID
 export default function ShoppingList({ fireDeleteAnimationCallback }) {
     const socket = useSocket()
     const [items, setItems] = useState([])
-    const [isApiLoaded, setIsApiLoaded] = useState(false)
+    const [isApiLoading, setIsApiLoading] = useState(true)
     const [shouldDeleteButtonBeEnabled, setShouldDeleteButtonBeEnabled] = useState(items.find(item => item.isInBasket) !== undefined)
     const [itemsInBasketAmount, setItemsInBasketAmount] = useState(items.filter(item => item.isInBasket)?.length)
 
@@ -51,7 +51,7 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
                 setItems(result)
                 setShouldDeleteButtonBeEnabled(result.find(item => item.isInBasket) !== undefined)
                 setItemsInBasketAmount(result.filter(item => item.isInBasket)?.length);
-                setIsApiLoaded(true)
+                setIsApiLoading(false)
             })
     }, [])
 
@@ -94,11 +94,8 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
     }
 
     return (
-        <div>
-            <div id="loading" hidden={isApiLoaded}>
-                <CircularProgress />
-            </div>
-            <div hidden={!isApiLoaded}>
+        isApiLoading ? <CircularProgress /> :
+            <div>
                 <ItemInput items={items} setItems={setItems} deleteInBasketItemsCallback={deleteInBasketItems} shouldDeleteButtonBeEnabled={shouldDeleteButtonBeEnabled} itemsInBasketAmount={itemsInBasketAmount} />
                 <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                     <List hidden={items.length === 0}>
@@ -114,6 +111,5 @@ export default function ShoppingList({ fireDeleteAnimationCallback }) {
                     </List>
                 </Box>
             </div>
-        </div>
     );
 }
