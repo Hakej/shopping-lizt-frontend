@@ -2,6 +2,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
+import { Zoom } from '@mui/material';
 
 const CustomListItemButton = styled(ListItemButton)({
     color: 'var(--color)',
@@ -29,11 +30,13 @@ export default function Item({ id, name, amount, isInBasket, checkItemCallback }
     }, [isInBasket])
 
     return (
-        <CustomListItemButton
-            onClick={onButtonClick}
-            style={vars}>
-            <ListItemText primary={name} />
-            {amount}
-        </CustomListItemButton>
+        <Zoom in={true}>
+            <CustomListItemButton
+                onClick={onButtonClick}
+                style={vars}>
+                <ListItemText primary={name} />
+                {amount}
+            </CustomListItemButton>
+        </Zoom>
     );
 }

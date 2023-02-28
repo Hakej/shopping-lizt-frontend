@@ -1,11 +1,10 @@
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useState, useEffect } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Badge } from '@mui/material';
+import { Badge, Zoom } from '@mui/material';
 import { useSocket } from '../WebSocket/UseSocket';
 
 const API_IP = process.env.REACT_APP_SHOPPING_LIZT_API_URL
@@ -49,10 +48,6 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback, shoul
     const handleItemInputValueChange = e => {
         validateInput(e.target.value)
         setItemInputValue(e.target.value)
-    }
-
-    const handleAddButtonClick = () => {
-        addItem();
     }
 
     const handleKeyPress = (event) => {
@@ -104,52 +99,52 @@ export default function ItemInput({ setItems, deleteInBasketItemsCallback, shoul
 
     return (
         <div>
-            <TextField
-                id="nameInput"
-                error={isItemNameInvalid}
-                helperText={invalidItemNameHelperText}
-                label="Item name"
-                variant="standard"
-                value={itemInputValue}
-                onChange={handleItemInputValueChange}
-                onKeyPress={handleKeyPress}
-                sx={{
-                    width: "67%"
-                }}
-            />
+                <TextField
+                    id="nameInput"
+                    error={isItemNameInvalid}
+                    helperText={invalidItemNameHelperText}
+                    label="Item name"
+                    variant="standard"
+                    value={itemInputValue}
+                    onChange={handleItemInputValueChange}
+                    onKeyPress={handleKeyPress}
+                    sx={{
+                        width: "67%"
+                    }}
+                    />
 
-            <IconButton
-                id="raiseAmountButton"
-                onClick={handleRaiseAmountButtonClick}
-                sx={{
-                    width: "10%"
-                }}
-            >
-                <ArrowUpwardIcon />
-            </IconButton>
-            {itemInputAmount}
-            <IconButton
-                id="lowerAmountButton"
-                onClick={handleLowerAmountButtonClick}
-                disabled={itemInputAmount === 1}
-                sx={{
-                    width: "10%"
-                }}
-            >
-                <ArrowDownwardIcon />
-            </IconButton>
+                <IconButton
+                    id="raiseAmountButton"
+                    onClick={handleRaiseAmountButtonClick}
+                    sx={{
+                        width: "10%"
+                    }}
+                    >
+                    <ArrowUpwardIcon />
+                </IconButton>
+                {itemInputAmount}
+                <IconButton
+                    id="lowerAmountButton"
+                    onClick={handleLowerAmountButtonClick}
+                    disabled={itemInputAmount === 1}
+                    sx={{
+                        width: "10%"
+                    }}
+                    >
+                    <ArrowDownwardIcon />
+                </IconButton>
 
-            <IconButton color="error"
-                onClick={handleDeleteButtonClick}
-                disabled={!shouldDeleteButtonBeEnabled}
-                sx={{
-                    width: "10%"
-                }}
-            >
-                <Badge badgeContent={itemsInBasketAmount} color="error">
-                    <DeleteForeverIcon />
-                </Badge>
-            </IconButton>
+                <IconButton color="error"
+                    onClick={handleDeleteButtonClick}
+                    disabled={!shouldDeleteButtonBeEnabled}
+                    sx={{
+                        width: "10%"
+                    }}
+                >
+                    <Badge badgeContent={itemsInBasketAmount} color="error">
+                        <DeleteForeverIcon />
+                    </Badge>
+                </IconButton>
         </div>
     );
 }
