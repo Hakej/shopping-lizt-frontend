@@ -9,8 +9,9 @@ export const SocketContext = createContext(socket);
 export const SocketProvider = (props) => {
     socket = io.connect(API_IP, {
         cors: {
-            origin: API_IP
-        }
+            origin: "*",
+        },
+        transports: ['websocket']
     })
 
     return (<SocketContext.Provider value={socket}>{props.children}</SocketContext.Provider>);
